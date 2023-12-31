@@ -1,0 +1,48 @@
+I defined a series of helper functions for the API to extract information in the rocket launch data;
+1. getBoosterVersion: GET request to https://api.spacexdata.com/v4/rockets/ for us to get the name of the booster name of the rocket.
+2. getLaunchSite: GET request to https://api.spacexdata.com/v4/launchpads/ for us to get the name of the launch site being used, the longitude and latitude.
+3. getPayLoadData: GET request to https://api.spacexdata.com/v4/payloads/ for us to get the mass of the payload and the orbit the rocket is going in space.
+4. getCoreData: GET request to https://api.spacexdata.com/v4/cores/ for us to know information about the rocket including the outcome of the landing, the type of landing, the number of flights with that core, whether gridfins were used, whether the core was reused, whether legs were used, information on landing pad, the core version, the number of times specific core was reused and the serial of the core.
+
+1. I did a GET request to parse the SpaceX rocket launch data from SpaceX API with the following URL: https://api.spacexdata.com/v4/launches/past
+- Created a JSON object to make the API results more consistent with the following URL:
+https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBM-DS0321EN-SkillsNetwork/datasets/API_call_spacex_api.json
+and converted the JSON result to a dataframe (data), which was filtered to specific features (date, rocket, payloads, launchpad, cores, flight_number)
+- From four columns in the dataframe (data), we applied the Helper functions to retrieve vital information;
+* From the 'rocket' column - getBoosterVersion;
+* From the 'payload' column - getPayLoadData;
+* From the 'launchpad' column - getLaunchSite;
+* From the 'cores' column - getCoreData;
+- We created a list of variables (BoosterVersion,PayloadMass, Orbit, LaunchSite, Outcome, Flights, GridFins, Reused, Legs, LandingPad, Block, ReusedCount, Serial, Longitude, Latitude) to construct a new dataframe (launch_dict) which includes the created list of variables and two columns (flight_number and date) from the dataframe (data). We transformed the new dataframe into a pandas dataframe (df)
+2. I filtered the dataframe (df) to keep only the Falcon 9 rocket launches into a new dataframe (data_falcon9) and checked for missing values.
+3. I imputed the mean into the missing values of the 'PayloadMass' column and saved as dataset_part_1.csv
+
+Web Scrapping:
+- I defined a series of helper functions (date_time, booster_version, landing_status, get_mass, extract_column_from_header) to process web scraped HTML table.
+1. I performed an HTTP GET method to request the Falcon9 rocket launch HTML page from this Wikipedia page: https://en.wikipedia.org/w/index.php?title=List_of_Falcon_9_and_Falcon_Heavy_launches&oldid=1027686922
+2. I extracted all variable names from the HTML table header.
+3. I created a dataframe (launch_dict) by parsing the launch HTML tables and saved as spacex_web_scraped.csv
+
+Column representations
+- FlightNumber: A unique identifier assigned to each SpaceX mission or launch.
+- Date: The date when the launch took place.
+- BoosterVersion: The version or model of the booster used for the launch.
+- PayloadMass: The mass of the payload carried during the launch (in kilograms).
+- Orbit: The orbit type achieved during the launch (e.g., LEO - Low Earth Orbit, GTO - Geostationary Transfer Orbit).
+- LaunchSite: The location from where the launch took place.
+- Outcome: The outcome of the launch (whether it was successful, failed, or other details about the outcome).
+- Flights: Number of flights conducted.
+GridFins: Whether grid fins were used during the launch.
+- Reused: Whether components of the rocket were reused from previous launches.
+- Legs: Whether the rocket had landing legs.
+LandingPad: The landing pad used, if applicable.
+- Block: The block number of the rocket.
+ReusedCount: The count of reused components.
+- Serial: The serial number or identifier of the rocket.
+- Longitude: The longitude coordinates of the launch site.
+- Latitude: The latitude coordinates of the launch site.
+
+
+
+
+
